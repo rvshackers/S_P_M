@@ -1,0 +1,710 @@
+/* ==========================================================================
+   1. CORE VARIABLES & BASE SETUP
+   ========================================================================== */
+:root {
+    --navy: #0b1d3a;
+    --navy-dark: #040a14;
+    --gold: #f7a800;
+    --white: #ffffff;
+    --light-bg: #f8fafc;
+    --text-dark: #333333;
+    
+    /* Advanced Bubble Glassmorphism Variables */
+    --glass-bg: rgba(255, 255, 255, 0.65); /* More transparent for bubble effect */
+    --glass-blur: blur(20px);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-shadow: 0 8px 32px 0 rgba(11, 29, 58, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: var(--light-bg); font-family: 'Poppins', sans-serif; color: var(--text-dark); overflow-x: hidden; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+.container { width: 100%; max-width: 1250px; margin: 0 auto; padding: 0 5%; }
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 140px; /* Desktop ke liye space badha diya */
+    body::-webkit-scrollbar {
+    display: none;
+    body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    }
+}
+}
+@media screen and (max-width: 768px) {
+    html {
+        scroll-padding-top: 160px; /* Mobile par logo/menu zyada height leta hai */
+    }
+}
+
+/* ==========================================================================
+   2. REUSABLE COMPONENTS, BUTTONS & GLOW EFFECTS
+   ========================================================================== */
+.btn-group { display: flex; gap: 20px; }
+.btn-primary, .btn-secondary {
+    text-decoration: none; padding: 15px 35px; font-weight: 600;
+    border-radius: 30px; font-size: 1rem; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden;
+}
+.btn-primary { background-color: var(--gold); color: var(--navy); box-shadow: 0 8px 20px rgba(247, 168, 0, 0.4); }
+.btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 25px rgba(247, 168, 0, 0.6); background-color: var(--white); }
+
+/* Premium Bubble Glass Button */
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur); color: var(--white);
+    border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
+}
+.btn-secondary:hover { background-color: var(--white); color: var(--navy); }
+
+.sub-heading {
+    display: inline-block; background: var(--gold); color: var(--navy);
+    padding: 6px 18px; border-radius: 30px; font-size: 13px; font-weight: 700;
+    margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px;
+    box-shadow: 0 4px 15px rgba(247, 168, 0, 0.3);
+}
+
+/* ==========================================================================
+   3. DYNAMIC TOP CONTACT BAR
+   ========================================================================== */
+.top-bar { background: linear-gradient(90deg, var(--navy-dark) 0%, var(--navy) 100%); color: var(--white); padding: 10px 0; font-size: 13px; letter-spacing: 0.5px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+.top-bar-content { display: flex; justify-content: space-between; align-items: center; }
+.pulse-icon { color: var(--gold); margin-right: 8px; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+.contact-info span { margin-right: 25px; opacity: 0.9; }
+.glow-text { font-weight: 600; color: var(--gold); text-decoration: none; letter-spacing: 1px; transition: all 0.3s ease; }
+.glow-text:hover { color: var(--white); text-shadow: 0 0 12px var(--gold); }
+
+/* ==========================================================================
+   4. NAVBAR (ADVANCED BUBBLE GLASSMORPHISM)
+   ========================================================================== */
+.navbar {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    position: sticky; top: 0; z-index: 1000; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.navbar.scrolled { padding: -5px 0; background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+.nav-content { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; }
+.brand-logo { max-width: 180px; height: auto; }
+.logo h2 { color: var(--navy); font-weight: 800; font-size: 26px; margin: 0;}
+.gold-text { color: var(--gold); }
+
+.nav-links { list-style: none; display: flex; align-items: center; margin: 0; }
+.nav-links li { margin-left: 30px; position: relative; }
+.nav-links a { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 14px; text-transform: uppercase; transition: 0.3s ease; display: flex; align-items: center; }
+.nav-links a i { margin-right: 6px; font-size: 1.15em; color: var(--gold); transition: transform 0.3s ease; }
+.nav-links a:hover i, .nav-links a.active i { transform: translateY(-3px); }
+.nav-links a::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -8px; left: 0; background-color: var(--gold); transition: width 0.3s ease; border-radius: 2px; box-shadow: 0 0 8px rgba(247, 168, 0, 0.6); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.menu-toggle { display: none; font-size: 28px; color: var(--navy); cursor: pointer; }
+
+/* ==========================================================================
+   5. HERO SECTION (CINEMATIC SLIDER & ROUNDED BORDERS)
+   ========================================================================== */
+.hero-slider {
+    position: relative; width: 100%; height: 85vh; min-height: 550px; overflow: hidden; background-color: var(--navy-dark);
+    border-top-left-radius: 40px; border-top-right-radius: 40px; border-top: 4px solid var(--gold);
+    box-shadow: inset 0 20px 40px rgba(0,0,0,0.5); margin-top: 5px; 
+}
+.slide, .slider-overlay { border-top-left-radius: 40px; border-top-right-radius: 40px; }
+.slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transform: scale(1.08); transition: opacity 1.5s ease-in-out, transform 6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.slide.active { opacity: 1; transform: scale(1); }
+.slider-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(4, 10, 20, 0.9) 0%, rgba(11, 29, 58, 0.4) 100%); display: flex; align-items: center; z-index: 10; }
+.overlay-content { color: var(--white); max-width: 800px; margin: 0; }
+.overlay-content h1 { font-size: 4.8rem; line-height: 1.1; margin-bottom: 25px; text-shadow: 2px 4px 15px rgba(0,0,0,0.5); letter-spacing: -1px; }
+.overlay-content p { font-size: 1.25rem; margin-bottom: 45px; opacity: 0.95; font-weight: 300; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+
+/* ==========================================================================
+   6. ABOUT SECTION & ANIMATIONS
+   ========================================================================== */
+.about-section { padding: 80px 0; background-color: var(--white); }
+.about-img-wrapper { position: relative; padding-right: 30px; padding-bottom: 30px; }
+.about-img { width: 100%; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; z-index: 2; }
+.about-img-wrapper::before { content: ''; position: absolute; bottom: 0; right: 0; width: 80%; height: 80%; background-color: var(--gold); border-radius: 20px; z-index: 1; }
+.experience-badge { position: absolute; top: 30px; left: -20px; background: var(--navy); color: var(--white); padding: 15px 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(11,29,58,0.3); z-index: 3; display: flex; align-items: center; gap: 15px; }
+.experience-badge .years { font-size: 2.2rem; font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold); }
+.experience-badge .text { font-size: 0.9rem; font-weight: 600; line-height: 1.2; text-transform: uppercase; }
+.section-title { font-size: 2.5rem; font-weight: 800; color: var(--navy); margin-bottom: 20px; line-height: 1.3; }
+.section-title span { color: var(--gold); }
+.about-text { font-size: 1.05rem; color: #555; line-height: 1.7; margin-bottom: 25px; }
+.about-features { list-style: none; margin-bottom: 35px; }
+.about-features li { font-size: 1.1rem; font-weight: 600; color: var(--navy-dark); margin-bottom: 15px; display: flex; align-items: center; }
+.about-features i { color: var(--gold); font-size: 1.4rem; margin-right: 15px; }
+
+/* Wave Divider */
+.curve-divider { position: absolute; bottom: -2px; left: 0; width: 100%; overflow: hidden; line-height: 0; z-index: 15; }
+.curve-divider svg { display: block; width: 100%; height: 90px; }
+
+/* Scroll Reveal */
+/* ==========================================================================
+   UPGRADED SCROLL REVEAL (Lively & Bouncy Effect)
+   ========================================================================== */
+.reveal { 
+    opacity: 0; 
+    transform: translateY(60px) scale(0.95); /* Starts slightly lower and smaller */
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elastic/Bouncy curve */
+}
+.reveal.active { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); /* Snaps into place smoothly */
+}
+/* ==========================================================================
+   8. SERVICES SECTION (PHOTO CARDS & CSS GRID)
+   ========================================================================== */
+.services-section {
+    padding: 80px 0;
+    background-color: var(--light-bg);
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+/* CSS Grid layout for 3 columns */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.service-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.4s ease;
+    overflow: hidden; /* Keeps image corners rounded */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Image Wrapper */
+.service-img {
+    width: 100%;
+    height: 220px; /* Fixed height so all cards look equal */
+    overflow: hidden;
+}
+
+.service-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents image stretching */
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-img img {
+    transform: scale(1.1); /* Zoom effect on hover */
+}
+
+/* Content Box */
+.service-content {
+    padding: 30px;
+    flex-grow: 1;
+}
+
+.service-content h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 15px;
+}
+
+.service-content p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.service-link {
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
+
+.service-link i { transition: transform 0.3s ease; }
+.service-link:hover { color: var(--navy); }
+.service-link:hover i { transform: translateX(5px); }
+
+/* Responsive Grid Adjustments */
+@media screen and (max-width: 992px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .services-section { padding: 50px 0; }
+}
+
+
+/* ==========================================================================
+   9. CHARGES SECTION (PRICING CARDS)
+   ========================================================================== */
+.charges-section {
+    padding: 80px 0;
+    background-color: var(--white); /* White contrast against the light-grey services section */
+}
+
+.charges-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.charge-card {
+    background: var(--light-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.charge-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: var(--gold);
+}
+
+.charge-header {
+    padding: 25px 20px;
+    background: var(--navy-dark);
+    color: var(--white);
+    border-bottom: 3px solid var(--gold);
+}
+
+.charge-header h3 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.charge-header p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.charge-img {
+    width: 100%;
+    padding: 30px;
+    background: var(--white);
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.charge-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.charge-card:hover .charge-img img {
+    transform: scale(1.05);
+}
+
+.charge-footer {
+    padding: 20px 30px;
+    background: var(--white);
+}
+
+/* ==========================================================================
+   10. CONTACT SECTION (DARK THEME & GLASS FORM)
+   ========================================================================== */
+.contact-section {
+    padding: 80px 0;
+    background-color: var(--navy-dark);
+    color: var(--white);
+}
+
+.contact-section .section-title { color: var(--white); }
+.text-light { color: var(--white); }
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Info Side */
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.info-icon {
+    width: 55px;
+    height: 55px;
+    background: rgba(247, 168, 0, 0.1);
+    color: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-right: 20px;
+    border: 1px solid rgba(247, 168, 0, 0.2);
+    transition: 0.3s;
+}
+
+.info-item:hover .info-icon {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
+.info-text h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--white);
+}
+
+.info-text p, .info-text a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+    margin: 0;
+}
+
+.info-text a:hover { color: var(--gold); }
+
+.map-wrapper {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 30px;
+}
+
+/* Glassmorphism Form */
+.glass-form {
+    background: var(--bubble-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--glass-shadow);
+}
+
+.glass-form h3 {
+    color: var(--gold);
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-control {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-control::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(247, 168, 0, 0.2);
+}
+
+/* ==========================================================================
+   11. FOOTER SECTION
+   ========================================================================== */
+.footer-section {
+    background: linear-gradient(135deg, #040a14 0%, #0b1d3a 100%);
+    color: rgba(255, 255, 255, 0.8);
+    padding-top: 80px;
+    border-top: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background glow to make it less dull */
+.footer-section::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(247,168,0,0.05) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.footer-top { position: relative; z-index: 1; }
+
+.footer-top.grid-4 {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.2fr 1.5fr;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.footer-logo { 
+    max-width: 200px; 
+    filter: brightness(0) invert(1); 
+    margin-bottom: 15px;
+}
+
+.footer-col h4 {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 40px; height: 3px;
+    background-color: var(--gold);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(247, 168, 0, 0.5); /* Glowing underline */
+}
+
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col ul li { margin-bottom: 16px; }
+
+.footer-col ul li a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+    font-size: 0.95rem;
+}
+
+.footer-col ul li a:hover {
+    color: var(--gold);
+    transform: translateX(8px);
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-contact i {
+    color: var(--gold);
+    margin-top: 4px;
+    font-size: 1.1rem;
+}
+
+.footer-contact a, .footer-contact span { 
+    color: rgba(255, 255, 255, 0.8); 
+    text-decoration: none; 
+    transition: 0.3s ease; 
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.footer-contact a:hover { color: var(--gold); }
+
+.social-links { display: flex; gap: 12px; }
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px; height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+    border-radius: 50%;
+    transition: 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.social-links a:hover {
+    background: var(--gold);
+    color: var(--navy-dark);
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(247, 168, 0, 0.4);
+}
+
+.footer-bottom {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 1;
+}
+
+.footer-bottom p { margin: 0; font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+
+/* ==========================================================================
+   12. FLOATING SOCIAL BUTTONS (LEFT MIDDLE)
+   ========================================================================== */
+.floating-social {
+    position: fixed;
+    top: 50%;
+    left: 15px; /* Set to left side */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 9999;
+}
+
+.float-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--white);
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.float-btn:hover {
+    transform: scale(1.15);
+    color: var(--white);
+}
+
+/* WhatsApp Icon with Green Pulse */
+.whatsapp-btn {
+    background-color: #25D366;
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* Call Icon with Gold Pulse (Alternating) */
+.call-btn {
+    background-color: var(--navy);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    animation: pulse-gold 2s infinite;
+    animation-delay: 1s; /* Delay makes them blink one after another */
+}
+
+@keyframes pulse-gold {
+    0% { box-shadow: 0 0 0 0 rgba(247, 168, 0, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(247, 168, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(247, 168, 0, 0); }
+}
+
+/* Mobile Adjustments for Floating Buttons */
+@media screen and (max-width: 768px) {
+    .floating-social { left: 10px; gap: 10px; }
+    .float-btn { width: 45px; height: 45px; font-size: 22px; }
+}
+
+
+
+
+/* /* ==========================================================================
+   MASTER MOBILE RESPONSIVE QUERIES (ALL BUGS FIXED)
+   ========================================================================== */
+@media screen and (max-width: 992px) {
+    .overlay-content h1 { font-size: 3.5rem; }
+    .hero-slider { height: 65vh; min-height: 450px; }
+}
+
+@media screen and (max-width: 768px) {
+    /* Top Bar Mobile (Fixed Missing Bracket) */
+    .top-bar-content { flex-direction: column; gap: 8px; text-align: center; }
+    .hide-mobile { display: none; }
+    .contact-info span { margin-right: 0; font-size: 12px; } 
+    
+    /* Navbar Mobile (Bubble Menu) */
+    .nav-content { padding: 10px 5%; }
+    .brand-logo { max-width: 140px; }
+    .menu-toggle { display: block; }
+    .nav-links {
+        position: absolute; top: 100%; left: 0; width: 100%;
+        background-color: var(--glass-bg); backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px); flex-direction: column; 
+        max-height: 0; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+        transition: max-height 0.4s ease; border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-links.show { max-height: 400px; padding: 15px 0;}
+    .nav-links li { margin: 0; width: 100%; text-align: center; }
+    .nav-links a { display: block; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .nav-links a::after { display: none; }
+    
+    /* Hero Section Mobile */
+    .hero-slider { height: 75vh; margin-top: 10px; border-top-left-radius: 30px; border-top-right-radius: 30px; border-top: 3px solid var(--gold); box-shadow: 0 -10px 20px rgba(0,0,0,0.1); }
+    .slide, .slider-overlay { border-top-left-radius: 30px; border-top-right-radius: 30px; }
+    .slider-overlay { background: rgba(4, 10, 20, 0.75); text-align: center; justify-content: center; }
+    .overlay-content { display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
+    .overlay-content h1 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 15px; }
+    .overlay-content p { font-size: 1rem; margin-bottom: 25px; }
+    .btn-group { flex-direction: column; width: 100%; gap: 15px; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; padding: 12px 20px; }
+    
+    /* Services, About, Charges & Contact Sections */
+    .curve-divider svg { height: 40px; }
+    .about-section, .charges-section, .contact-section, .services-section { padding: 50px 0; }
+    .about-img-wrapper { padding-right: 15px; padding-bottom: 15px; }
+    .experience-badge { left: -10px; top: 15px; padding: 10px 15px; gap: 10px; }
+    .experience-badge .years { font-size: 1.8rem; }
+    .section-title { font-size: 2rem; }
+    .about-features li { font-size: 1rem; }
+    .charges-grid, .contact-grid, .services-grid { grid-template-columns: 1fr; gap: 30px; }
+    .charge-img { padding: 15px; }
+    .glass-form { padding: 25px; }
+    
+    /* Footer Mobile Fixed */
+    .footer-top.grid-4 { grid-template-columns: 1fr !important; gap: 45px; text-align: center; }
+    .footer-logo { margin: 0 auto 20px auto; display: block; }
+    .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+    .footer-contact li { flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 8px; }
+    .social-links { justify-content: center; margin-top: 25px; }
+
+    /* Floating Social Buttons Shifted to Bottom on Mobile */
+   .floating-social { 
+        top: 50%; 
+        bottom: auto; 
+        left: 10px; 
+        transform: translateY(-50%); 
+        flex-direction: column; /* Wapas vertical kar diya */
+    }
+    .float-btn { width: 45px; height: 45px; 
+                  font-size: 22px; 
+            }
